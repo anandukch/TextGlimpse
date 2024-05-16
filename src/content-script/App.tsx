@@ -23,7 +23,6 @@ function App() {
                 browser.runtime.sendMessage({ action: "generate", payload: selectedText });
                 setResult("Loading...");
             }
-            // document.removeEventListener("mouseup", mouseUpHandler);
         };
 
         const getSelectedText = () => {
@@ -71,22 +70,7 @@ function App() {
                     align={"center"}
                     pos={"absolute"}
                     zIndex={1000}
-                    // _after={{
-                    //     content: `""`,
-                    //     w: 0,
-                    //     h: 0,
-                    //     borderLeft: "solid transparent",
-                    //     borderLeftWidth: 16,
-                    //     borderRight: "solid transparent",
-                    //     borderRightWidth: 16,
-                    //     borderTop: "solid",
-                    //     borderTopWidth: 16,
-                    //     borderTopColor: useColorModeValue("white", "gray.800"),
-                    //     pos: "absolute",
-                    //     bottom: "-16px",
-                    //     left: "50%",
-                    //     transform: "translateX(-50%)",
-                    // }}
+
                 >
                     <Text>{result}</Text>
                 </Stack>
