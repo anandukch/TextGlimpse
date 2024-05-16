@@ -1,7 +1,6 @@
 import browser from "webextension-polyfill";
 import runChat from "./llm";
 
-type ResponseCallback = (data: object) => void;
 type MessageInterface = {
     action: string;
     payload: string;
@@ -13,8 +12,7 @@ const sendToCurrentTab = (message: MessageInterface) => {
         }
     });
 };
-// var apiKey = browser.storage.local.get("apiKey").then((res) => res.apiKey);
-browser.runtime.onMessage.addListener((msg: MessageInterface, sender, response: ResponseCallback) => {
+browser.runtime.onMessage.addListener((msg: MessageInterface) => {
     switch (msg.action) {
         case "generate":
             console.log("Selected text from background", msg);

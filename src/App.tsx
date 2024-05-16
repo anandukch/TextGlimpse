@@ -1,12 +1,25 @@
-import { ChangeEventHandler, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import "./App.css";
 import browser from "webextension-polyfill";
-import { Flex, Box, FormControl, FormLabel, Input, Stack, Button, useColorModeValue, Select, Text, Heading } from "@chakra-ui/react";
+import {
+    Flex,
+    Box,
+    FormControl,
+    FormLabel,
+    Input,
+    Stack,
+    Button,
+    useColorModeValue,
+    Select,
+    Heading,
+    Switch,
+} from "@chakra-ui/react";
 
 function App() {
     const [selectedOption, setSelectedOption] = useState("GPT");
     const [apiKey, setApiKey] = useState("");
     const [apiCheck, setApiCheck] = useState(false);
+    const [isExtEnabled, setIsExtEnabled] = useState(false);
 
     const handleOptionChange = (e: any) => {
         setSelectedOption(e.target.value);
@@ -23,10 +36,24 @@ function App() {
         setApiCheck(true);
     };
 
+    const handlerRemoveApiKey = () => {
+        browser.storage.local.remove("apiKey");
+        setApiKey("");
+        setApiCheck(false);
+    };
+
+    const enableExtHandler = () => {
+        browser.storage.local.set({ enableExt: !isExtEnabled });
+        setIsExtEnabled(() => !isExtEnabled);
+    };
+
     useEffect(() => {
         browser.storage.local.get("apiKey").then((res) => {
             setApiKey(res.apiKey);
             setApiCheck(true);
+            browser.storage.local.get("enableExt").then((res) => {
+                setIsExtEnabled(res.enableExt);
+            });
         });
     }, []);
 
@@ -39,7 +66,7 @@ function App() {
                             <>
                                 <Heading size="md">Api Key</Heading>
                                 <Button
-                                    onClick={() => setApiCheck(false)}
+                                    onClick={handlerRemoveApiKey}
                                     bg={"red.400"}
                                     color={"white"}
                                     _hover={{
@@ -75,6 +102,11 @@ function App() {
                                 </Stack>
                             </>
                         )}
+
+                        <FormLabel htmlFor="enable-extension" mt={"20px"}>
+                            <Heading size="md">Activate Extension</Heading>
+                        </FormLabel>
+                        <Switch id="enable-extension" onChange={enableExtHandler} isChecked={isExtEnabled} />
                     </Stack>
                 </Box>
             </Flex>
